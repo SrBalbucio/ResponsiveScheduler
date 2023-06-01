@@ -16,6 +16,7 @@ public class SchedulerTest implements Listener {
     @BeforeAll
     public void init(){
         scheduler = new ResponsiveScheduler();
+        scheduler.getEventManager().registerListener(this);
     }
 
     @Test
