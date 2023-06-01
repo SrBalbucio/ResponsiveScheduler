@@ -2,6 +2,7 @@ package balbucio.responsivescheduler.event.impl;
 
 import balbucio.responsivescheduler.*;
 import balbucio.responsivescheduler.event.Event;
+import balbucio.responsivescheduler.ResponsiveScheduler;
 
 public class AsyncTaskFinishedEvent implements Event {
 
@@ -28,5 +29,6 @@ public class AsyncTaskFinishedEvent implements Event {
     }
 
     public void rerun(){
+        ResponsiveScheduler.runAsyncTask(task);
     }
 }
