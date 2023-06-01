@@ -1,29 +1,18 @@
 package balbucio.responsivescheduler.event.impl;
 
 import balbucio.responsivescheduler.RSTask;
+import balbucio.responsivescheduler.event.Event;
 
-public class TaskFinishedEvent {
+public class TaskFinishedEvent implements Event {
 
     private RSTask task;
-    private boolean interrupted = false;
-    private boolean problemOnExecution = false;
 
-    public TaskFinishedEvent(RSTask task, boolean interrupted, boolean problemOnExecution) {
+    public TaskFinishedEvent(RSTask task) {
         this.task = task;
-        this.interrupted = interrupted;
-        this.problemOnExecution = problemOnExecution;
     }
 
     public RSTask getTask() {
         return task;
-    }
-
-    public boolean isInterrupted() {
-        return interrupted;
-    }
-
-    public boolean isProblemOnExecution() {
-        return problemOnExecution;
     }
 
     public void rerun(){
