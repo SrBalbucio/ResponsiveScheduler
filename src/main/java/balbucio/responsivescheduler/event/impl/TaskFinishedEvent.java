@@ -17,6 +17,6 @@ public class TaskFinishedEvent implements Event {
     }
 
     public void rerun(){
-        ResponsiveScheduler.runTask(task);
+        ResponsiveScheduler.getInstance().runTask(task);
     }
 }
