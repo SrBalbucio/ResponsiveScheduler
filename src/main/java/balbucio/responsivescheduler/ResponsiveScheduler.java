@@ -100,6 +100,8 @@ public class ResponsiveScheduler {
             if(t == task){
                 if(th.isAlive()) {
                     th.interrupt();
+                    AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, th.isInterrupted(), t.hasProblem());
+                    eventManager.sendEvent(event);
                 }
             }
         });
@@ -107,7 +109,26 @@ public class ResponsiveScheduler {
             if(t == task){
                 if(!f.isDone() || !f.isCancelled()){
                     f.cancel(true);
+                    TaskFinishedEvent event = new TaskFinishedEvent(t);
+                    eventManager.sendEvent(event);
                 }
+            }
+        });
+    }
+
+    public void cancelAllTasks(){
+        async.forEach((t, th) -> {
+            if(th.isAlive()) {
+                th.interrupt();
+                AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, th.isInterrupted(), t.hasProblem());
+                eventManager.sendEvent(event);
+            }
+        });
+        tasks.forEach((t, f) -> {
+            if(!f.isDone() || !f.isCancelled()){
+                f.cancel(true);
+                TaskFinishedEvent event = new TaskFinishedEvent(t);
+                eventManager.sendEvent(event);
             }
         });
     }
