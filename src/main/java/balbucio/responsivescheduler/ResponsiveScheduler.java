@@ -15,11 +15,9 @@ public class ResponsiveScheduler {
     public static ResponsiveScheduler getInstance() {
         return instance;
     }
-
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
     private Map<RSTask, Thread> async = new HashMap<>();
     private Map<RSTask, Future<?>> tasks = new HashMap<>();
-    private Timer task = new Timer();
     private RSEventManager eventManager;
 
     public ResponsiveScheduler(){
@@ -28,26 +26,23 @@ public class ResponsiveScheduler {
         }
         instance = this;
         this.eventManager = new RSEventManager();
-        this.task.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                for(RSTask t : async.keySet()){
-                    Thread thread = async.get(t);
-                    if(!thread.isAlive() || thread.isInterrupted()){
-                        tasks.remove(t);
-                        AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, thread.isInterrupted(), t.hasProblem());
-                        eventManager.sendEvent(event);
-                    }
-                }
-                for(RSTask t : tasks.keySet()){
-                    Future<?> f = tasks.get(t);
-                    if(f.isDone() || f.isCancelled()){
-                        TaskFinishedEvent event = new TaskFinishedEvent(t);
-                        eventManager.sendEvent(event);
-                    }
+        executor.scheduleAtFixedRate(() -> {
+            for(RSTask t : async.keySet()){
+                Thread thread = async.get(t);
+                if(!thread.isAlive() || thread.isInterrupted()){
+                    tasks.remove(t);
+                    AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, thread.isInterrupted(), t.hasProblem());
+                    eventManager.sendEvent(event);
                 }
             }
-        }, 0, 2000);
+            for(RSTask t : tasks.keySet()){
+                Future<?> f = tasks.get(t);
+                if(f.isDone() || f.isCancelled()){
+                    TaskFinishedEvent event = new TaskFinishedEvent(t);
+                    eventManager.sendEvent(event);
+                }
+            }
+        }, 0, 2000, TimeUnit.MILLISECONDS);
     }
 
     public RSEventManager getEventManager() {
