@@ -16,6 +16,14 @@ public class RSEventManager {
         listeners.add(listener);
     }
 
+    public void removeListener(Listener listener){
+        listeners.remove(listener);
+    }
+
+    public List<Listener> getListeners() {
+        return listeners;
+    }
+
     public void sendEvent(Event e){
         if(e instanceof AsyncTaskStartedEvent){
             listeners.forEach(l -> l.asyncTaskStarted((AsyncTaskStartedEvent) e));
@@ -27,6 +35,8 @@ public class RSEventManager {
             listeners.forEach(l -> l.taskFinishedEvent((TaskFinishedEvent) e));
         } else if(e instanceof TaskProblemEvent){
             listeners.forEach(l -> l.taskProblemEvent((TaskProblemEvent) e));
+        } else if(e instanceof ScheduledTaskEvent){
+            listeners.forEach(l -> l.scheduledTask((ScheduledTaskEvent) e));
         }
     }
 }

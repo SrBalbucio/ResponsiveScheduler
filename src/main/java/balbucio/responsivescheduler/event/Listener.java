@@ -9,4 +9,5 @@ public interface Listener {
     void taskStatedEvent(TaskStartedEvent evt);
     void taskFinishedEvent(TaskFinishedEvent evt);
     void taskProblemEvent(TaskProblemEvent evt);
+    void scheduledTask(ScheduledTaskEvent evt);
 }

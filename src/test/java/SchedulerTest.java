@@ -1,8 +1,5 @@
 import balbucio.responsivescheduler.event.Listener;
-import balbucio.responsivescheduler.event.impl.AsyncTaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.AsyncTaskStartedEvent;
-import balbucio.responsivescheduler.event.impl.TaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.TaskStartedEvent;
+import balbucio.responsivescheduler.event.impl.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -45,6 +42,11 @@ public class SchedulerTest implements Listener {
 
     @Override
     public void taskFinishedEvent(TaskFinishedEvent evt) {
+
+    }
+
+    @Override
+    public void taskProblemEvent(TaskProblemEvent evt) {
 
     }
 }
