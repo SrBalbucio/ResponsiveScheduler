@@ -1,10 +1,7 @@
 package balbucio.responsivescheduler;
 
 import balbucio.responsivescheduler.event.RSEventManager;
-import balbucio.responsivescheduler.event.impl.AsyncTaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.AsyncTaskStartedEvent;
-import balbucio.responsivescheduler.event.impl.TaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.TaskStartedEvent;
+import balbucio.responsivescheduler.event.impl.*;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -88,6 +85,26 @@ public class ResponsiveScheduler {
         }
         Future<?> future = executor.scheduleAtFixedRate(task, delay, period, TimeUnit.MILLISECONDS);
         tasks.put(task, future);
+    }
+
+    public void repeatDailyTask(int hour, int minute, int second, RSTask task) {
+        ScheduledTaskEvent event = new ScheduledTaskEvent(task, hour, minute, second);
+        eventManager.sendEvent(event);
+        if (event.isCanceled()) {
+            return;
+        }
+        Calendar calendar = Calendar.getInstance();
+        Date now = new Date();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        if (calendar.getTime().before(now)) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        long delay = calendar.getTimeInMillis() - now.getTime();
+        Future<?> future = executor.scheduleAtFixedRate(task, delay, 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+        tasks.put(task, future);
+
     }
 
     public void cancelTask(RSTask task){

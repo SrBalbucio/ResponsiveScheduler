@@ -1,9 +1,6 @@
 package balbucio.responsivescheduler.event;
 
-import balbucio.responsivescheduler.event.impl.AsyncTaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.AsyncTaskStartedEvent;
-import balbucio.responsivescheduler.event.impl.TaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.TaskStartedEvent;
+import balbucio.responsivescheduler.event.impl.*;
 
 public interface Listener {
 
@@ -11,4 +8,5 @@ public interface Listener {
     void asyncTaskFinished(AsyncTaskFinishedEvent evt);
     void taskStatedEvent(TaskStartedEvent evt);
     void taskFinishedEvent(TaskFinishedEvent evt);
+    void taskProblemEvent(TaskProblemEvent evt);
 }

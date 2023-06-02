@@ -1,9 +1,6 @@
 package balbucio.responsivescheduler.event;
 
-import balbucio.responsivescheduler.event.impl.AsyncTaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.AsyncTaskStartedEvent;
-import balbucio.responsivescheduler.event.impl.TaskFinishedEvent;
-import balbucio.responsivescheduler.event.impl.TaskStartedEvent;
+import balbucio.responsivescheduler.event.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +25,8 @@ public class RSEventManager {
             listeners.forEach(l -> l.taskStatedEvent((TaskStartedEvent) e));
         } else if(e instanceof TaskFinishedEvent){
             listeners.forEach(l -> l.taskFinishedEvent((TaskFinishedEvent) e));
+        } else if(e instanceof TaskProblemEvent){
+            listeners.forEach(l -> l.taskProblemEvent((TaskProblemEvent) e));
         }
     }
 }
