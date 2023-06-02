@@ -49,4 +49,9 @@ public class SchedulerTest implements Listener {
     public void taskProblemEvent(TaskProblemEvent evt) {
 
     }
+
+    @Override
+    public void scheduledTask(ScheduledTaskEvent evt) {
+
+    }
 }
