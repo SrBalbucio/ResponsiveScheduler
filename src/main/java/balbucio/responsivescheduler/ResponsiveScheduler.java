@@ -27,7 +27,7 @@ public class ResponsiveScheduler {
             for(RSTask t : async.keySet()){
                 Thread thread = async.get(t);
                 if(!thread.isAlive() || thread.isInterrupted()){
-                    tasks.remove(t);
+                    async.remove(t);
                     AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, thread.isInterrupted(), t.hasProblem());
                     eventManager.sendEvent(event);
                 }
@@ -35,6 +35,7 @@ public class ResponsiveScheduler {
             for(RSTask t : tasks.keySet()){
                 Future<?> f = tasks.get(t);
                 if(f.isDone() || f.isCancelled()){
+                    tasks.remove(t);
                     TaskFinishedEvent event = new TaskFinishedEvent(t);
                     eventManager.sendEvent(event);
                 }
@@ -114,6 +115,7 @@ public class ResponsiveScheduler {
                     th.interrupt();
                     AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, th.isInterrupted(), t.hasProblem());
                     eventManager.sendEvent(event);
+                    async.remove(t);
                 }
             }
         });
@@ -123,6 +125,7 @@ public class ResponsiveScheduler {
                     f.cancel(true);
                     TaskFinishedEvent event = new TaskFinishedEvent(t);
                     eventManager.sendEvent(event);
+                    tasks.remove(t);
                 }
             }
         });
@@ -134,6 +137,7 @@ public class ResponsiveScheduler {
                 th.interrupt();
                 AsyncTaskFinishedEvent event = new AsyncTaskFinishedEvent(t, th.isInterrupted(), t.hasProblem());
                 eventManager.sendEvent(event);
+
             }
         });
         tasks.forEach((t, f) -> {
@@ -143,6 +147,14 @@ public class ResponsiveScheduler {
                 eventManager.sendEvent(event);
             }
         });
+        async.clear();
+        tasks.clear();
+    }
+
+    public void shutdown(){
+        cancelAllTasks();
+        executor.shutdown();
+
     }
 
 }
