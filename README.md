@@ -55,3 +55,5 @@ scheduler.repeatTask(test, 0, 2000); // executa a task sem delay (0) a cada 2 se
 ```
 ## Cancele tarefas
 Para cancelar tarefas é muito simples, use o método ``cancelTask(task);`` para cancelar uma tarefa especifica ou use ``cancelAllTasks();`` para cancelar todas.
+## Finalizar
+Para finalizar o ResponsiveScheduler é necessário usar a função ``shutdown();``, essa função irá finalizar todas as tarefas e liberar todas as threads usadas. Obs.: Serão emitidos eventos de cancelamento quando as tarefas foram finalizadas pelo shutdown.
