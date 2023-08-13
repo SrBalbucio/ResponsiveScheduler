@@ -59,6 +59,7 @@ public class ResponsiveScheduler {
 
     public void runAsyncTask(RSTask task){
         Thread thread = new Thread(task);
+        thread.setDaemon(true);
         AsyncTaskStartedEvent event = new AsyncTaskStartedEvent(task, thread);
         eventManager.sendEvent(event);
         if(event.isCanceled()){
@@ -151,10 +152,14 @@ public class ResponsiveScheduler {
         tasks.clear();
     }
 
+    public boolean isActive(){
+        return executor.isShutdown();
+    }
+
     public void shutdown(){
         cancelAllTasks();
-        executor.shutdown();
-
+        executor.shutdownNow();
+        eventManager.sendEvent(new ShutdownEvent());
     }
 
 }

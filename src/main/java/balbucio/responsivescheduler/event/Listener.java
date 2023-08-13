@@ -10,4 +10,5 @@ public interface Listener {
     void taskFinishedEvent(TaskFinishedEvent evt);
     void taskProblemEvent(TaskProblemEvent evt);
     void scheduledTask(ScheduledTaskEvent evt);
+    void shutdown(ShutdownEvent evt);
 }

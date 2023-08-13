@@ -20,6 +20,10 @@ public class RSEventManager {
         listeners.remove(listener);
     }
 
+    public void unregisterAll(){
+        listeners.clear();
+    }
+
     public List<Listener> getListeners() {
         return listeners;
     }
@@ -37,6 +41,8 @@ public class RSEventManager {
             listeners.forEach(l -> l.taskProblemEvent((TaskProblemEvent) e));
         } else if(e instanceof ScheduledTaskEvent){
             listeners.forEach(l -> l.scheduledTask((ScheduledTaskEvent) e));
+        } else if(e instanceof ShutdownEvent){
+            listeners.forEach(l -> l.shutdown((ShutdownEvent) e));
         }
     }
 }
