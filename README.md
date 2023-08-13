@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/SrBalbucio/ResponsiveScheduler.svg)](https://jitpack.io/#SrBalbucio/ResponsiveScheduler)
 # ResponsiveScheduler
 Agende tarefas em Java de forma rápida e segura.<br>Schedule tasks in Java quickly and securely.
 
