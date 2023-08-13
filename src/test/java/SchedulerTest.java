@@ -54,4 +54,9 @@ public class SchedulerTest implements Listener {
     public void scheduledTask(ScheduledTaskEvent evt) {
 
     }
+
+    @Override
+    public void shutdown(ShutdownEvent evt) {
+
+    }
 }
