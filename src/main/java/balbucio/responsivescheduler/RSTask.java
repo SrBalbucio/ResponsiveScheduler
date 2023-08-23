@@ -4,6 +4,21 @@ import balbucio.responsivescheduler.event.impl.TaskProblemEvent;
 
 public abstract class RSTask implements Runnable{
 
+    public static RSTask fromRunnable(Runnable r){
+        return new RSTask() {
+            @Override
+            public void run() {
+                try {
+                    r.run();
+                } catch (Exception e){
+                    e.printStackTrace();
+                    setProblem(true);
+                    setProblemID(-1);
+                }
+            }
+        };
+    }
+
     private boolean problem = false;
     private int problemID = 0;
 

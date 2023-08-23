@@ -7,11 +7,18 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ResponsiveScheduler {
-
     private static ResponsiveScheduler instance;
     public static ResponsiveScheduler getInstance() {
         return instance;
     }
+
+    public static void run(Runnable runnable){
+        if(instance == null){
+            instance = new ResponsiveScheduler();
+        }
+        instance.runTask(RSTask.fromRunnable(runnable));
+    }
+
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
     private Map<RSTask, Thread> async = new HashMap<>();
     private Map<RSTask, Future<?>> tasks = new HashMap<>();
