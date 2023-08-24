@@ -38,6 +38,7 @@ Rodar uma tarefa no pool de threads (a task entrará numa fila de execuções):
 ```java
 // adicione a task
 scheduler.runTask(test); // isso executará a task
+ResponsiveScheduler.run(Runnable: runnable); // executa uma task runnable
 ```
 Rodar uma tarefa numa thread dedicada:
 ```java
