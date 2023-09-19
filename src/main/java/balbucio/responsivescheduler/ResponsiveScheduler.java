@@ -19,16 +19,35 @@ public class ResponsiveScheduler {
         instance.runTask(RSTask.fromRunnable(runnable));
     }
 
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+    public static void run(RSTask t){
+        if(instance == null){
+            instance = new ResponsiveScheduler();
+        }
+        instance.runTask(t);
+    }
+
+    public static void runAsync(RSTask t){
+        if(instance == null){
+            instance = new ResponsiveScheduler();
+        }
+        instance.runAsyncTask(t);
+    }
+
+    private ScheduledExecutorService executor;
     private Map<RSTask, Thread> async = new HashMap<>();
     private Map<RSTask, Future<?>> tasks = new HashMap<>();
     private RSEventManager eventManager;
 
     public ResponsiveScheduler(){
+        this(10);
+    }
+
+    public ResponsiveScheduler(int poolSize){
         if(instance != null){
             return;
         }
         instance = this;
+        executor = Executors.newScheduledThreadPool(poolSize);
         this.eventManager = new RSEventManager();
         executor.scheduleAtFixedRate(() -> {
             for(RSTask t : async.keySet()){
