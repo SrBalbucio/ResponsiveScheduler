@@ -1,26 +1,29 @@
 package balbucio.responsivescheduler.event;
 
+import balbucio.responsivescheduler.ResponsiveScheduler;
 import balbucio.responsivescheduler.event.impl.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RSEventManager {
 
     private List<Listener> listeners = new ArrayList<>();
 
-    public RSEventManager(){
+    public RSEventManager() {
     }
 
-    public void registerListener(Listener listener){
+    public void registerListener(Listener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(Listener listener){
+    public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
-    public void unregisterAll(){
+    public void unregisterAll() {
         listeners.clear();
     }
 
@@ -28,21 +31,40 @@ public class RSEventManager {
         return listeners;
     }
 
-    public void sendEvent(Event e){
-        if(e instanceof AsyncTaskStartedEvent){
-            listeners.forEach(l -> l.asyncTaskStarted((AsyncTaskStartedEvent) e));
-        } else if(e instanceof AsyncTaskFinishedEvent){
-            listeners.forEach(l -> l.asyncTaskFinished((AsyncTaskFinishedEvent) e));
-        } else if(e instanceof TaskStartedEvent){
-            listeners.forEach(l -> l.taskStatedEvent((TaskStartedEvent) e));
-        } else if(e instanceof TaskFinishedEvent){
-            listeners.forEach(l -> l.taskFinishedEvent((TaskFinishedEvent) e));
-        } else if(e instanceof TaskProblemEvent){
-            listeners.forEach(l -> l.taskProblemEvent((TaskProblemEvent) e));
-        } else if(e instanceof ScheduledTaskEvent){
-            listeners.forEach(l -> l.scheduledTask((ScheduledTaskEvent) e));
-        } else if(e instanceof ShutdownEvent){
-            listeners.forEach(l -> l.shutdown((ShutdownEvent) e));
+    public void sendEvent(Event e) {
+        try {
+            listeners.forEach(l -> {
+                for (Method m : l.getClass().getDeclaredMethods()) {
+                    if (Arrays.stream(m.getParameterTypes()).anyMatch(cz -> e.getClass().equals(cz))) {
+                        Object[] obj = new Object[m.getParameterTypes().length];
+                        for (int i = 0; i < m.getParameterTypes().length; i++) {
+                            Class<?> clazz = m.getParameterTypes()[i];
+                            if (clazz.equals(e.getClass())) {
+                                obj[i] = e;
+                            } else {
+                                obj[i] = getObjectFromClazz(clazz);
+                            }
+                        }
+                        try {
+                            m.invoke(l, obj);
+                        } catch (Exception exc) {
+                            exc.printStackTrace();
+                        }
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private Object getObjectFromClazz(Class<?> clazz) {
+        if (clazz.equals(ResponsiveScheduler.class)) {
+            return ResponsiveScheduler.getInstance();
+        } else if (clazz.equals(RSEventManager.class)) {
+            return this;
+        } else {
+            return null;
         }
     }
 }

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>balbucio.responsivescheduler</groupId>
-    <artifactId>ResponsiveScheduler</artifactId>
-    <version>v1.0.5</version>
+    <artifactId>responsive-scheduler</artifactId>
+    <version>2.0</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -14,7 +14,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <developers>
+        <developer>
+            <name>João Gabriel</name>
+            <email>joao.gbasantos@hyperpowered.net</email>
+            <organization>HyperPowered</organization>
+            <organizationUrl>https://hyperpowered.net</organizationUrl>
+            <url>https://balbucio.xyz</url>
+        </developer>
+    </developers>
+
     <dependencies>
+        <dependency>
+            <groupId>balbucio.throwable</groupId>
+            <artifactId>throwable</artifactId>
+            <version>1.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -31,7 +47,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -42,8 +57,20 @@
                     </includes>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/srbalbucio/ResponsiveScheduler</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/srbalbucio/ResponsiveScheduler</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
