@@ -184,6 +184,10 @@ public class ResponsiveScheduler {
         tasks.clear();
     }
 
+    public boolean hasTaskRunning(){
+        return (tasks.isEmpty() && async.isEmpty()) || (tasks.values().stream().noneMatch(Future::isDone) && async.values().stream().noneMatch(Thread::isAlive));
+    }
+
     public boolean isActive() {
         return !executor.isShutdown();
     }

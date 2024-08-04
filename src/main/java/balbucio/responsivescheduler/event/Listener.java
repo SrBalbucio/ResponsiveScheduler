@@ -8,7 +8,6 @@ public interface Listener {
     void asyncTaskFinished(AsyncTaskFinishedEvent evt);
     void taskStatedEvent(TaskStartedEvent evt);
     void taskFinishedEvent(TaskFinishedEvent evt);
-    void taskProblemEvent(TaskProblemEvent evt);
     void scheduledTask(ScheduledTaskEvent evt);
     void shutdown(ShutdownEvent evt);
 }
